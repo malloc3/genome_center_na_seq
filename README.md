@@ -1,4 +1,4 @@
-Cannin Mallory
+Cannon Mallory
 malloc3@uw.edu
 Univeristy of Washington
 
