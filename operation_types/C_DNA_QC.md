@@ -30,6 +30,8 @@ end
 
 needs "Standard Libs/Debug"
 needs "Standard Libs/CommonInputOutputNames"
+needs "Standard Libs/Units"
+
 needs "Collection_Management/CollectionDisplay"
 needs "Collection_Management/CollectionTransfer"
 needs "Collection_Management/CollectionActions"
@@ -47,9 +49,8 @@ class Protocol
 
   def main
     validate_inputs(operations)
-    working_plate = Collection.new_collection(C_TYPE)
-
-    get_new_plate(working_plate)
+    
+    working_plate = make_new_plate(C_TYPE)
     
     operations.retrieve
 
