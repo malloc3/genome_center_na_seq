@@ -924,6 +924,30 @@ $(document).ready(function() {
         <li class="public ">
   <span class="summary_signature">
     
+      <a href="#get_and_label_new_plate-instance_method" title="#get_and_label_new_plate (instance method)">#<strong>get_and_label_new_plate</strong>(plate)  &#x21d2; Object </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Instructions on getting and labeling new plate.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
       <a href="#get_item_locations-instance_method" title="#get_item_locations (instance method)">#<strong>get_item_locations</strong>(obj_array)  &#x21d2; Object </a>
     
 
@@ -940,6 +964,30 @@ $(document).ready(function() {
   
     <span class="summary_desc"><div class='inline'>
 <p>instructions to store a specific collection.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#make_new_plate-instance_method" title="#make_new_plate (instance method)">#<strong>make_new_plate</strong>(c_type, label_plate = true)  &#x21d2; Object </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>makes a new plate and provides instructions to label said plate.</p>
 </div></span>
   
 </li>
@@ -1099,7 +1147,54 @@ $(document).ready(function() {
 
     
       <div class="method_details first">
-  <h3 class="signature first" id="get_item_locations-instance_method">
+  <h3 class="signature first" id="get_and_label_new_plate-instance_method">
+  
+    #<strong>get_and_label_new_plate</strong>(plate)  &#x21d2; <tt>Object</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Instructions on getting and labeling new plate</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+146
+147
+148
+149
+150
+151</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'CollectionActions.rb', line 146</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_get_and_label_new_plate'>get_and_label_new_plate</span><span class='lparen'>(</span><span class='id identifier rubyid_plate'>plate</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_show'>show</span> <span class='kw'>do</span>
+    <span class='id identifier rubyid_title'>title</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Get and Label Working Plate</span><span class='tstring_end'>&quot;</span></span>
+    <span class='id identifier rubyid_note'>note</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Get a &lt;b&gt;</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_plate'>plate</span><span class='period'>.</span><span class='id identifier rubyid_object_type'>object_type</span><span class='period'>.</span><span class='id identifier rubyid_name'>name</span><span class='embexpr_end'>}</span><span class='tstring_content'>&lt;/b&gt; and lable ID: &lt;b&gt;</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_plate'>plate</span><span class='period'>.</span><span class='id identifier rubyid_id'>id</span><span class='embexpr_end'>}</span><span class='tstring_content'>&lt;/b&gt;</span><span class='tstring_end'>&quot;</span></span>
+    <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="get_item_locations-instance_method">
   
     #<strong>get_item_locations</strong>(obj_array)  &#x21d2; <tt>Object</tt> 
   
@@ -1143,6 +1238,53 @@ $(document).ready(function() {
         <span class='id identifier rubyid_tab'>tab</span><span class='period'>.</span><span class='id identifier rubyid_push'>push</span><span class='lparen'>(</span><span class='lbracket'>[</span><span class='id identifier rubyid_obj'>obj</span><span class='period'>.</span><span class='id identifier rubyid_id'>id</span><span class='comma'>,</span> <span class='id identifier rubyid_obj'>obj</span><span class='period'>.</span><span class='id identifier rubyid_object_type'>object_type</span><span class='period'>.</span><span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='id identifier rubyid_obj'>obj</span><span class='period'>.</span><span class='id identifier rubyid_location'>location</span><span class='rbracket'>]</span><span class='rparen'>)</span>
     <span class='kw'>end</span>
     <span class='kw'>return</span> <span class='id identifier rubyid_tab'>tab</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="make_new_plate-instance_method">
+  
+    #<strong>make_new_plate</strong>(c_type, label_plate = true)  &#x21d2; <tt>Object</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>makes a new plate and provides instructions to label said plate</p>
+
+<p>@ c_type string the collection type @ label_plate boolean weather to get and label plate or no default true Returns</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+135
+136
+137
+138
+139</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'CollectionActions.rb', line 135</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_make_new_plate'>make_new_plate</span><span class='lparen'>(</span><span class='id identifier rubyid_c_type'>c_type</span><span class='comma'>,</span> <span class='id identifier rubyid_label_plate'>label_plate</span> <span class='op'>=</span> <span class='kw'>true</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_working_plate'>working_plate</span> <span class='op'>=</span> <span class='const'>Collection</span><span class='period'>.</span><span class='id identifier rubyid_new_collection'>new_collection</span><span class='lparen'>(</span><span class='id identifier rubyid_c_type'>c_type</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_get_and_label_new_plate'>get_and_label_new_plate</span><span class='lparen'>(</span><span class='id identifier rubyid_working_plate'>working_plate</span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='id identifier rubyid_label_plate'>label_plate</span>
+    <span class='kw'>return</span> <span class='id identifier rubyid_working_plate'>working_plate</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
