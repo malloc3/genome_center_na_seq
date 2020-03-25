@@ -4,7 +4,11 @@
 # This module includes helfpul methods for transferring items into and out of collections
 # Currently it only has collection --> collection transfers 
 #TODO Item --> collection and collection --> item transfers. (not applicable for current project so not added)
+needs "Standard Libs/Units"
+
 module CollectionTransfer
+  
+  include Units
 
 
   #Provides instructions to transfer sample from an input_collection to a working_working collection
@@ -24,10 +28,10 @@ module CollectionTransfer
     input_rcx = []
     output_rcx = []
     arry_sample.each do |sample|
-      input_location_array = input_collection.find(sample)
+      input_location_array = get_item_sample_location(input_collection, sample)
       input_sample_location = get_alpha_num_location(input_collection, sample)
 
-      output_location_array = working_collection.find(sample)
+      output_location_array = get_item_sample_location(working_collection, sample)
       output_sample_location = get_alpha_num_location(input_collection, sample)
 
       input_location_array.each do |sub_array|
@@ -40,9 +44,12 @@ module CollectionTransfer
           output_rcx.push(sub_array)
       end
     end
+
+    associate_plate_to_plate(working_collection, input_collection, "Input Plate", "Input Item")
+
     show do 
       title "Transfer from Stock Plate to Working Plate"
-      note "Please transfer #{transfer_vol} ul from stock plate (ID:#{input_collection.id}) to working 
+      note "Please transfer #{transfer_vol} #{MICROLITERS} from stock plate (ID:#{input_collection.id}) to working 
                                 plate (ID:#{working_collection.id}) per tables below"
       note "Separator"
       note "Stock Plate (ID: #{input_collection.id}):"
@@ -77,17 +84,6 @@ module CollectionTransfer
     show do
       title "Rename Plate"
       note "Relabel plate #{plate1.id} with #{plate2.id}"
-    end
-  end
-
-
-  #Instructions on getting and labeling new plate
-  #
-  #@plate Collection plate to be gotten and labeled
-  def get_new_plate(plate)
-    show do
-      title "Get and Label Working Plate"
-      note "Get a <b>#{plate.object_type.name}</b> and lable ID: <b>#{plate.id}</b>"
     end
   end
 
@@ -142,5 +138,21 @@ module CollectionTransfer
       end
     end
     return collection_array.uniq
+  end
+
+
+  #associates all items in the added_plate to the items in the base plate
+  # Associates corrosponding well locations.  Assocaites plate to plate and well to well
+  # Only associates to wells that have a part in them
+  #
+  #@base_plate collcetion the plate that is getting the association
+  #@added_plate collection the plate that is transfering the association
+  def associate_plate_to_plate(base_plate, added_plate, plate_key, item_key)
+    base_plate.associate(plate_key, added_plate)
+    added_parts = added_plate.parts
+    base_parts = base_plate.parts
+    base_parts.each_with_index do |part, idx|
+      part.associate(item_key, added_parts[idx])
+    end
   end
 end
