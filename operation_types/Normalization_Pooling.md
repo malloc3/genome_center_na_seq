@@ -41,6 +41,8 @@ end
 
 needs "Standard Libs/Debug"
 needs "Standard Libs/CommonInputOutputNames"
+needs "Standard Libs/Units"
+
 needs "Collection_Management/CollectionDisplay"
 needs "Collection_Management/CollectionTransfer"
 needs "Collection_Management/CollectionActions"
@@ -62,11 +64,9 @@ class Protocol
 
     validate_cdna_qc(operations)
 
-    working_plate = Collection.new_collection(C_TYPE)
+    multi_plate = multi_input_plates?(operations)
 
-    multi_plate = true #multi_input_plates?(operations)
-
-    get_new_plate(working_plate) if multi_plate
+    working_plate = make_new_plate(C_TYPE, multi_plate)
   
     operations.retrieve
 
