@@ -95,6 +95,12 @@ var config = {
             },
           
             {
+              name: 'CsvDebugLib',
+              path: 'libraries/CsvDebugLib' + '.html',
+              type: "local-webpage"
+            },
+          
+            {
               name: 'Debug',
               path: 'libraries/Debug' + '.html',
               type: "local-webpage"
@@ -142,6 +148,24 @@ var config = {
         contents: [
           
             {
+              name: 'E coli strain',
+              path: 'sample_types/E_coli_strain'  + '.md',
+              type: "local-md"
+            },
+          
+            {
+              name: 'Plasmid',
+              path: 'sample_types/Plasmid'  + '.md',
+              type: "local-md"
+            },
+          
+            {
+              name: 'Primer',
+              path: 'sample_types/Primer'  + '.md',
+              type: "local-md"
+            },
+          
+            {
               name: 'RNA Sample',
               path: 'sample_types/RNA_Sample'  + '.md',
               type: "local-md"
@@ -155,6 +179,12 @@ var config = {
             {
               name: '96 Well Sample Plate',
               path: 'object_types/96_Well_Sample_Plate'  + '.md',
+              type: "local-md"
+            },
+          
+            {
+              name: 'Fragment Stock',
+              path: 'object_types/Fragment_Stock'  + '.md',
               type: "local-md"
             },
           
