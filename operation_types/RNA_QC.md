@@ -9,7 +9,11 @@ Documentation here. Start with a paragraph, not a heading or title, as in most v
 
 
 
+### Outputs
 
+
+- **Frag_out** [f]  
+  - <a href='#' onclick='easy_select("Sample Types", "Plasmid")'>Plasmid</a> / <a href='#' onclick='easy_select("Containers", "Fragment Stock")'>Fragment Stock</a>
 
 ### Precondition <a href='#' id='precondition'>[hide]</a>
 ```ruby
@@ -37,6 +41,7 @@ end
 
 needs "Standard Libs/Debug"
 needs "Standard Libs/CommonInputOutputNames"
+needs "Standard Libs/Units"
 needs "Collection_Management/CollectionDisplay"
 needs "Collection_Management/CollectionTransfer"
 needs "Collection_Management/CollectionActions"
@@ -54,13 +59,12 @@ class Protocol
 
   def main
     validate_inputs(operations)
-    working_plate = Collection.new_collection(C_TYPE)
-    show do
-      title "Get and Lable Working Plate"
-      note "Get a <b>#{C_TYPE}</b> and lable ID: <b>#{working_plate.id}</b>"
-    end
+    
+    working_plate = make_new_plate(C_TYPE)
     
     operations.retrieve
+
+    operations.make
 
     operations.each do |op|
       input_fv_array = op.input_array(INPUT_ARRAY)
