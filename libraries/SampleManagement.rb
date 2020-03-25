@@ -4,6 +4,8 @@
 #This is to facilitate sample management within collection
 module SampleManagement
 
+  ALPHA26 = ("A"..."Z").to_a
+
   #Gets the location string of a sample in a collection 
   #Returns Alpha numerical string eg A1 or if the sample is
   #in multiple locations will return A1, A2, A3
@@ -11,20 +13,31 @@ module SampleManagement
   #@collection Collection the collection that the sample is in
   #@sample Sample the Sample that you want the Alpha Numerical location for
   def get_alpha_num_location(collection, sample)
-    loc_array = collection.find(sample)
+    loc_array = get_item_sample_location(collection, sample)
     string = ""
-    alpha26 = ("A"..."Z").to_a
     loc_array.each_with_index do |loc, idx|
       string = string + ", " if idx > 0
       loc.each_with_index do |rc, idx|
         if idx.even?
-          string = string + alpha26[rc]
+          string = string + ALPHA26[rc]
         else
           string = string + "#{rc+1}"
         end
       end
     end
     return string
+  end
+
+
+  #Finds the location of what ever is give either item or sample
+  #
+  # @collection collection the collection containing the thing
+  # @part item,part, or sample that is to be found
+  # returns
+  # @Array[array[r,c]] sometimes samples are in multiple places so array of array
+  def get_item_sample_location(collection, part)
+    location_array = collection.find(part)
+    return location_array
   end
 
 
@@ -54,6 +67,22 @@ module SampleManagement
         r_c = working_plate.find(fv.sample).first
         fv.set(collection: working_plate, row: r_c[0], column: r_c[1])
       end
+  end
+
+  #This finds a sample from an alpha numberical string location(e.g. A1, B1)
+  #
+  # @collection collection a collection that the part is located in
+  # @loc string  the location in the collection for part (A1, B3, C7)
+  # Returns:
+  # @part item the item at that location
+  def part_alpha_num(collection, loc)
+    row = ALPHA26.find_index(loc[0,1])
+    col = loc[1...].to_i - 1
+
+    dem = collection.dimensions 
+    raise "Location outside collection dimensions" if row > dem[0] || col > dem[1]
+    part = collection.part(row,col)
+    return part
   end
 
 end
