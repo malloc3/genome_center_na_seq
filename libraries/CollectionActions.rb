@@ -125,6 +125,30 @@ module CollectionActions
             table tab
         end
     end
+
+    #makes a new plate and provides instructions to label said plate
+    #
+    # @ c_type string the collection type
+    # @ label_plate boolean weather to get and label plate or no default true
+    # Returns
+    # @collection collection the collection it makes
+    def make_new_plate(c_type, label_plate = true)
+        working_plate = Collection.new_collection(c_type)
+        get_and_label_new_plate(working_plate) if label_plate
+        return working_plate
+    end
+
+
+
+    #Instructions on getting and labeling new plate
+    #
+    #@plate Collection plate to be gotten and labeled
+    def get_and_label_new_plate(plate)
+        show do
+        title "Get and Label Working Plate"
+        note "Get a <b>#{plate.object_type.name}</b> and lable ID: <b>#{plate.id}</b>"
+        end
+    end
     
     
 end
