@@ -6,6 +6,18 @@ module SampleManagement
 
   ALPHA26 = ("A"..."Z").to_a
 
+
+  #Returns an location array [r,c] for the location given in alpha_loc form
+  #
+  #@alpha_loc string of form A1, B1, B2 etc
+  #returns
+  #@loc_array array[int, int] [row,column]
+  def get_loc_from_alpha_loc(alpha_loc)
+    row = ALPHA26.find_index(alpha_loc[0,1])
+    col = alpha_loc[1...].to_i - 1
+    return [row,col]
+  end
+
   #Gets the location string of a sample in a collection 
   #Returns Alpha numerical string eg A1 or if the sample is
   #in multiple locations will return A1, A2, A3
@@ -76,8 +88,9 @@ module SampleManagement
   # Returns:
   # @part item the item at that location
   def part_alpha_num(collection, loc)
-    row = ALPHA26.find_index(loc[0,1])
-    col = loc[1...].to_i - 1
+    array_loc = get_loc_from_alpha_loc(loc)
+    row = array_loc[0]
+    col = array_loc[1]
 
     dem = collection.dimensions 
     raise "Location outside collection dimensions" if row > dem[0] || col > dem[1]
