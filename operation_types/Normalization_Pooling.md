@@ -98,7 +98,7 @@ class Protocol
     show do
       title "Do the Normalization Pooling Steps"
       note "Run typical Normalization Pooling protocol with plate #{working_plate.id}"
-      table highlight_non_empty(working_plate)
+      table highlight_non_empty(working_plate, check: false)
     end
   end
 end
