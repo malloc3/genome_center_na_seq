@@ -25,26 +25,26 @@ var config = {
 
           
             {
-              name: 'C_DNA_QC',
-              path: 'operation_types/C_DNA_QC' + '.md',
-              type: "local-md"
-            },
-          
-            {
               name: 'Normalization Pooling',
               path: 'operation_types/Normalization_Pooling' + '.md',
               type: "local-md"
             },
           
             {
-              name: 'RNA_Prep',
+              name: 'RNA Prep',
               path: 'operation_types/RNA_Prep' + '.md',
               type: "local-md"
             },
           
             {
-              name: 'RNA_QC',
+              name: 'RNA QC',
               path: 'operation_types/RNA_QC' + '.md',
+              type: "local-md"
+            },
+          
+            {
+              name: 'cDNA QC',
+              path: 'operation_types/cDNA_QC' + '.md',
               type: "local-md"
             },
           
@@ -131,6 +131,12 @@ var config = {
             },
           
             {
+              name: 'UploadHelper',
+              path: 'libraries/UploadHelper' + '.html',
+              type: "local-webpage"
+            },
+          
+            {
               name: 'WorkflowValidation',
               path: 'libraries/WorkflowValidation' + '.html',
               type: "local-webpage"
@@ -148,24 +154,6 @@ var config = {
         contents: [
           
             {
-              name: 'E coli strain',
-              path: 'sample_types/E_coli_strain'  + '.md',
-              type: "local-md"
-            },
-          
-            {
-              name: 'Plasmid',
-              path: 'sample_types/Plasmid'  + '.md',
-              type: "local-md"
-            },
-          
-            {
-              name: 'Primer',
-              path: 'sample_types/Primer'  + '.md',
-              type: "local-md"
-            },
-          
-            {
               name: 'RNA Sample',
               path: 'sample_types/RNA_Sample'  + '.md',
               type: "local-md"
@@ -179,12 +167,6 @@ var config = {
             {
               name: '96 Well Sample Plate',
               path: 'object_types/96_Well_Sample_Plate'  + '.md',
-              type: "local-md"
-            },
-          
-            {
-              name: 'Fragment Stock',
-              path: 'object_types/Fragment_Stock'  + '.md',
               type: "local-md"
             },
           
