@@ -1,19 +1,15 @@
-# RNA_QC
+# RNA QC
 
 Documentation here. Start with a paragraph, not a heading or title, as in most views, the title will be supplied by the view.
 ### Inputs
 
 
-- **Input Array** [IS] (Array) Part of collection
+- **Input Array** [IS] (Array) 
   - <a href='#' onclick='easy_select("Sample Types", "RNA Sample")'>RNA Sample</a> / <a href='#' onclick='easy_select("Containers", "Total RNA 96 Well Plate")'>Total RNA 96 Well Plate</a>
 
 
 
-### Outputs
 
-
-- **Frag_out** [f]  
-  - <a href='#' onclick='easy_select("Sample Types", "Plasmid")'>Plasmid</a> / <a href='#' onclick='easy_select("Containers", "Fragment Stock")'>Fragment Stock</a>
 
 ### Precondition <a href='#' id='precondition'>[hide]</a>
 ```ruby
@@ -42,6 +38,7 @@ end
 needs "Standard Libs/Debug"
 needs "Standard Libs/CommonInputOutputNames"
 needs "Standard Libs/Units"
+needs "Standard Libs/UploadHelper"
 needs "Collection_Management/CollectionDisplay"
 needs "Collection_Management/CollectionTransfer"
 needs "Collection_Management/CollectionActions"
@@ -49,22 +46,24 @@ needs "Collection_Management/SampleManagement"
 needs "RNA_Seq/WorkflowValidation"
 needs "RNA_Seq/KeywordLib"
 
+require 'csv'
 
 class Protocol
   include Debug, CollectionDisplay, CollectionTransfer, SampleManagement
-  include CollectionActions, WorkflowValidation, CommonInputOutputNames, KeywordLib
+  include CollectionActions, WorkflowValidation, CommonInputOutputNames
+  include KeywordLib, UploadHelper
 
   TRANSFER_VOL = 20   #volume of sample to be transfered in ul
-
+  CSV_HEADERS = ["Well Position", "Conc(ng/ul)"]
+  CSV_LOCATION = "TBD Location of file"
 
   def main
+
     validate_inputs(operations)
     
     working_plate = make_new_plate(C_TYPE)
     
     operations.retrieve
-
-    operations.make
 
     operations.each do |op|
       input_fv_array = op.input_array(INPUT_ARRAY)
@@ -74,38 +73,69 @@ class Protocol
     
     store_input_collections(operations)
     take_qc_measurments(working_plate)
+    list_concentrations(working_plate)
     trash_object(working_plate)
-
   end
+
+
+  
 
 
   # Instruction on taking the QC measurements themselves.
   # Currently not operational but associates random concentrations for testing
   #
-  #TODO complete this and make it actually look at CSV Files
+  #@param working_plate collection the plate being used
   def take_qc_measurments(working_plate)
-    input_rcx = []
-    operations.each do |op|
-      input_array = op.input_array(INPUT_ARRAY)
-      input_items = input_array.map{|fv| fv.item}
-      arry_sample = input_array.map{|fv| fv.sample}
-      input_items.each_with_index do |item, idx|
-        item.associate(CON_KEY, rand(50..100))
-        sample = arry_sample[idx]
-        working_plate_loc_array = working_plate.find(sample)
-        working_plate_loc_array.each do |sub_array|
-          sub_array.push("#{item.get(CON_KEY)}")
-          input_rcx.push(sub_array)
+    show do
+      title "Load Plate #{working_plate.id} on Plate Reader"
+      note "Load plate on plate reader and take concentration measurements"
+      note "Save output data as CSV and upload on next page"
+    end
+
+    csv_uploads = get_validated_uploads(working_plate.parts.length, 
+        CSV_HEADERS, false, file_location: CSV_LOCATION)
+
+    upload = csv_uploads.first
+    csv = CSV.read(open(upload.url))
+    conc_idx = csv.first.find_index(CSV_HEADERS[1])
+    loc_idx = csv.first.find_index(CSV_HEADERS[0])
+    csv.drop(1).each_with_index do |row, idx|
+      alpha_loc = row[loc_idx]
+      conc = row[conc_idx].to_i
+      part = part_alpha_num(working_plate, alpha_loc)
+      if !part.nil?
+        part.associate(CON_KEY, conc)
+        samp = part.sample
+        operations.each do |op|
+          op.input_array(INPUT_ARRAY).each do |fv|
+            if samp == fv.sample
+              fv.part.associate(CON_KEY, conc)
+            end
+          end
         end
       end
     end
+  end
 
+
+  #Lists the measured concentrations.
+  #TODO write highlight heat map method for table
+  #
+  #@param working_plate collection the plate being used
+  def list_concentrations(working_plate)
+    rcx_array = []
+    parts = working_plate.parts
+    parts.each do |part|
+      loc_array = working_plate.find(part)
+      loc_array.each do |loc|
+        loc.push(part.get(CON_KEY))
+        rcx_array.push(loc)
+      end
+    end
     show do
-      title "Perform QC Measurements"
-      note "Please Attach excel files"
-      note "For testing purposes each sample will be given a random concentration from 50 to 100 ng/ul"
-      note "This will eventually come from a CSV file"
-      table highlight_rcx(working_plate, input_rcx)
+      title "Measurements Take"
+      note "Recorded Concentrations are listed below"
+      table highlight_rcx(working_plate, rcx_array, check: false)
     end
   end
 end
