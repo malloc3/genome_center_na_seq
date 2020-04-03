@@ -21,31 +21,31 @@ module CollectionDisplay
     end
   end
 
-  def highlight tbl, row, col, id
-    tbl[row][col] = {content: id, class: 'td-filled-slot', check: true}
+  def highlight(tbl, row, col, id, check: true)
+    tbl[row][col] = {content: id, class: 'td-filled-slot', check: check}
   end
 
   # [r,c,x] list
-  def highlight_rcx(collection, rcx_list)
+  def highlight_rcx(collection, rcx_list, check: true)
     tbl = create_collection_table collection
     rcx_list.each do |r, c, x|
-      highlight tbl, r, c, x
+      highlight(tbl, r, c, x, check: check)
     end
     tbl
   end
 
-  def highlight_rc collection, rc_list, &rc_block
+  def highlight_rc(collection, rc_list,  check: true, &rc_block)
     rcx_list = rc_list.map { |r, c|
       block_given? ? [r, c, yield(r, c)] : [r, c, ""]
     }
-    highlight_rcx collection, rcx_list
+    highlight_rcx(collection, rcx_list, check: check)
   end
 
-  def highlight_non_empty(collection, &rc_block)
-    highlight_rc collection, collection.get_non_empty, &rc_block
+  def highlight_non_empty(collection, check: true, &rc_block)
+    highlight_rc(collection, collection.get_non_empty, check: check, &rc_block)
   end
 
-  def highlight_collection ops, id_block=nil, &fv_block
+  def highlight_collection(ops, id_block=nil, check: true, &fv_block)
     g = ops.group_by { |op| fv_block.call(op).collection }
     tables = g.map do |collection, grouped_ops|
       rcx_list = grouped_ops.map do |op|
@@ -54,7 +54,7 @@ module CollectionDisplay
         id ||= fv.sample.id
         [fv.row, fv.column, id]
       end
-      tbl = highlight_rcx collection, rcx_list
+      tbl = highlight_rcx(collection, rcx_list, check: check)
       [collection, tbl]
     end
     tables
@@ -79,23 +79,23 @@ module CollectionDisplay
     end
   end
   
-  def highlight_alpha_rc collection, rc_list, &rc_block
+  def highlight_alpha_rc(collection, rc_list, check: true, &rc_block)
     rcx_list = rc_list.map { |r, c|
       block_given? ? [r, c, yield(r, c)] : [r, c, ""]
     }
-    highlight_alpha_rcx(collection, rcx_list)
+    highlight_alpha_rcx(collection, rcx_list, check: check)
   end
   
-  def highlight_alpha_rcx(collection, rcx_list)
+  def highlight_alpha_rcx(collection, rcx_list, check: true)
      tbl = create_alpha_numeric_table(collection)
      rcx_list.each do |r, c, x|
-         highlight tbl, r, c, x
+         highlight(tbl, r, c, x, check: check)
      end
      return tbl
   end
 
-  def highlight_alpha_non_empty collection, &rc_block
-    highlight_alpha_rc collection, collection.get_non_empty, &rc_block
+  def highlight_alpha_non_empty(collection, check: true, &rc_block)
+    highlight_alpha_rc(collection, collection.get_non_empty, check: check, &rc_block)
   end
       
 end
