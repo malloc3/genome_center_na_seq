@@ -35,7 +35,7 @@ module WorkflowValidation
   def validate_concentrations(operations, range)
     operations.each do |op|
       op.input_array(INPUT_ARRAY).each do |fv|
-        conc = fv.item.get(CON_KEY)
+        conc = fv.part.get(CON_KEY)
         raise "Sample #{fv.sample.id} doesn't have a valid concentration for this operation"if !range.cover? conc
       end
     end
