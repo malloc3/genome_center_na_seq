@@ -9,10 +9,10 @@ Goes through the Genome Center's standard RNA-Seq workflow [[Download](genome_ce
 - Cannon Mallory, <malloc3@uw.edu>
 
 ### Authors
-  - Cannon Malloyr, UW
+  - Cannon Mallory, UW
 
 ### Acknowledgements
-  - First Last, A Place
+  - Amy Cash, UW
 
 ### Details
 This workflow and these documents were automatically generated from
